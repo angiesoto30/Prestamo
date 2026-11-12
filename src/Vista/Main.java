@@ -15,9 +15,60 @@ public class Main {
         vista.mostrarPeticion(++n, descripcion);
         vista.mostrarResultado(r);
     }
+    
+    
+    
+        
+            
+            
+           public static void main(String[] args) {
+           int modo;
+           do {
+            modo = vista.pedirModo();
+            if (modo == 1) {
+                correrPeticiones();
+            } else if (modo == 2) {
+                correrInteractivo();
+            }
+        } while (modo != 0);
+    }
 
-    public static void main(String[] args) {
+    static void correrInteractivo() {
         PrestamoController c = new PrestamoController();
+        int opcion;
+        do {
+            opcion = vista.pedirOpcion();
+            switch (opcion) {
+                case 1 -> vista.mostrarResultado(c.prestar(
+                        vista.pedirCodigo("Código del usuario (ej. E-101): "),
+                        vista.pedirCodigo("Código del equipo (ej. P-01): "),
+                        vista.pedirFecha()));
+                case 2 -> vista.mostrarResultado(c.devolver(
+                        vista.pedirCodigo("Código del equipo (ej. P-01): "),
+                        vista.pedirFecha()));
+                case 3 -> vista.mostrarResultado(c.reservar(
+                        vista.pedirCodigo("Código del usuario (ej. E-101): "),
+                        vista.pedirCodigo("Código del equipo (ej. P-01): "),
+                        vista.pedirFecha()));
+                case 4 -> vista.mostrarLista("DEUDA POR PERSONA", c.consultarDeudas());
+                case 5 -> vista.mostrarLista("LOG", c.consultarLog());
+                case 6 -> {
+                    c.simularFalloGuardado();
+                    vista.mostrarMensaje("El próximo préstamo fallará al guardar.");
+                }
+                default -> { }
+            }
+        } while (opcion != 0);
+        
+    }
+    
+    static void correrPeticiones() {
+        
+        n = 0;
+        PrestamoController c = new PrestamoController();
+        
+        
+        
 
         paso("2 mar - Camila (E-101) pide P-01", c.prestar("E-101", "P-01", d(2)));
         paso("2 mar - Camila (E-101) pide M-01", c.prestar("E-101", "M-01", d(2)));
